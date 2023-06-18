@@ -2,21 +2,26 @@ import React, { useState } from "react";
 
 type Props = {
   cardOptions: { key: string; title: string; description: string }[];
-  setOption: React.Dispatch<React.SetStateAction<string>>;
+  setOption: React.Dispatch<React.SetStateAction<string[]>>;
 };
 function Page({ cardOptions, setOption }: Props) {
-  const [selected, setSelected] = useState<string>("");
+  const [selected, setSelected] = useState<string[]>([]);
+
   return (
     cardOptions &&
     cardOptions.map((cardOption, index) => (
       <div
-        className={`my-4 border-2   ${
-          selected == cardOption.key ? "border-red-300" : "border-gray-300"
-        }`}
         key={cardOption.key}
+        className={`my-4 border-2   ${
+          selected.includes(cardOption.key)
+            ? "border-red-300"
+            : "border-gray-300"
+        }`}
         onClick={() => {
-          setSelected(cardOption.key);
-          setOption(cardOption.key);
+          if (!selected.includes(cardOption.key)) selected.push(cardOption.key);
+          else selected.splice(selected.indexOf(cardOption.key), 1);
+          setSelected(selected);
+          setOption(selected);
         }}
       >
         <article className="prose-base">

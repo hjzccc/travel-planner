@@ -28,7 +28,7 @@ function Page() {
   return (
     <div className="flex items-center justify-center w-screen h-screen ">
       <div className="flex flex-col items-center">
-        <p>Enter the city you want to start your trip:</p>
+        <p>Enter your budget:</p>
         <CardSelection
           cardOptions={cardOptions}
           setOption={setTripLevel}

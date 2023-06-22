@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import CardSelection from "@/components/cardSelection";
 import { useTravelPlanDataRedux } from "@/hooks/travelPlanData/hooks";
+import { Button } from "antd";
 function Page() {
   const [tripLevel, setTripLevel] = useState<string>("normal");
   const { doSetTripLevel } = useTravelPlanDataRedux();
@@ -15,8 +16,8 @@ function Page() {
       description: "You will visit the most popular places in the city.",
     },
     {
-      key: "simple",
-      title: "Simple",
+      key: "economic",
+      title: "Economic",
       description: "You will visit the most popular places in the city.",
     },
     {
@@ -33,7 +34,7 @@ function Page() {
           cardOptions={cardOptions}
           setOption={setTripLevel}
         ></CardSelection>
-        <button
+        <Button
           className="h-10 bg-slate-300 w-36"
           onClick={() => {
             doSetTripLevel(tripLevel as travelPlanDataType["tripLevel"]);
@@ -41,7 +42,7 @@ function Page() {
           }}
         >
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );

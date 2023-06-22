@@ -3,6 +3,7 @@ import { useTravelPlanDataRedux } from "@/hooks/travelPlanData/hooks";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import CardSelectionMulti from "@/components/cardSelectionMulti";
+import { Button } from "antd";
 function Page() {
   const [tripFeaures, setTripFeaures] = useState<string[]>([]);
   const { doSetFeatures } = useTravelPlanDataRedux();
@@ -32,7 +33,7 @@ function Page() {
           cardOptions={cardOptions}
           setOption={setTripFeaures}
         ></CardSelectionMulti>
-        <button
+        <Button
           className="h-10 bg-slate-300 w-36"
           onClick={() => {
             doSetFeatures(tripFeaures);
@@ -40,7 +41,7 @@ function Page() {
           }}
         >
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );

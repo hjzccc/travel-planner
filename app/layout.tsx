@@ -2,6 +2,7 @@
 import { Provider } from "react-redux";
 import "./globals.css";
 import store from "@/store/store";
+import Header from "@/components/header";
 export default function RootLayout({
   children,
 }: {
@@ -9,7 +10,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-gray-200">
+        <Header />
         <Provider store={store}>{children}</Provider>
       </body>
     </html>

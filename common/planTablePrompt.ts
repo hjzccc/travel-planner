@@ -93,13 +93,13 @@ export const chatForPlan = async ({
   const response = await chat.call([systemMessage, humanMessage]);
   try {
     let parsedOutput = await parser.parse(response.text);
-    logger.info(parsedOutput);
+    logger.info(JSON.stringify(parsedOutput));
     return parsedOutput;
   } catch (e) {
     const fixParser = OutputFixingParser.fromLLM(new ChatOpenAI(), parser);
     fixParser.getFormatInstructions();
     const fixedOutput = await fixParser.parse(response.text);
-    logger.info(fixedOutput);
+    logger.info(JSON.stringify(fixedOutput));
     return fixedOutput;
   }
 };

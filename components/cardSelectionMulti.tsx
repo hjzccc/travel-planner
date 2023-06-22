@@ -19,13 +19,17 @@ function Page({ cardOptions, setOption }: Props) {
             : "border-gray-300"
         }`}
         onClick={() => {
-          if (!selected.includes(cardOption.key)) selected.push(cardOption.key);
-          else selected.splice(selected.indexOf(cardOption.key), 1);
-          setSelected(selected);
+          setSelected((prevSelected) => {
+            if (!prevSelected.includes(cardOption.key)) {
+              return [...prevSelected, cardOption.key];
+            } else {
+              return prevSelected.filter((item) => item !== cardOption.key);
+            }
+          });
           setOption(selected);
         }}
       >
-        <Card className="prose-base rounded-lg" hoverable>
+        <Card className="rounded-lg prose-base" hoverable>
           <h2>{cardOption.title}</h2>
           <h3>{cardOption.description}</h3>
         </Card>

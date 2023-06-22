@@ -21,7 +21,7 @@ export const useTravelPlanDataRedux = () => {
   const doSetFeatures = (features: string[]) => {
     dispatch(setFeatures(features));
   };
-  const doSetTripLevel = (tripLevel: "luxury" | "normal" | "budget") => {
+  const doSetTripLevel = (tripLevel: "luxury" | "normal" | "economic") => {
     dispatch(setTripLevel(tripLevel));
   };
   const doSetTravelPlanData = (travelPlanData: travelPlanDataType) => {

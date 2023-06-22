@@ -4,7 +4,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 export type travelPlanDataType = {
   destination: string;
   features: string[];
-  tripLevel: "luxury" | "normal" | "budget";
+  tripLevel: "luxury" | "normal" | "economic";
   days: number;
 };
 const initialState: travelPlanDataType = {
@@ -27,7 +27,7 @@ export const travelPlanDataSlice = createSlice({
     },
     setTripLevel: (
       state,
-      action: PayloadAction<"luxury" | "normal" | "budget">
+      action: PayloadAction<"luxury" | "normal" | "economic">
     ) => {
       state.tripLevel = action.payload;
       return state;

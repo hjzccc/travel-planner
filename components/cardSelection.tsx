@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Card } from "antd";
 
 type Props = {
   cardOptions: { key: string; title: string; description: string }[];
@@ -19,10 +20,10 @@ function Page({ cardOptions, setOption }: Props) {
           setOption(cardOption.key);
         }}
       >
-        <article className="prose-base">
+        <Card className="prose-base rounded-lg" hoverable>
           <h2>{cardOption.title}</h2>
           <h3>{cardOption.description}</h3>
-        </article>
+        </Card>
       </div>
     ))
   );

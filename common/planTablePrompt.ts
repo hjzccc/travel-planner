@@ -15,13 +15,9 @@ import {
 } from "langchain/output_parsers";
 import { z } from "zod";
 import logger from "./winstonLogger";
+import { travelPlanDataType } from "@/store/travelPlanDataSlice";
 const pinecone = new PineconeClient();
-type travelPlanDataType = {
-  destination: string;
-  features: string[];
-  tripLevel: "luxury" | "normal" | "budget";
-  days: number;
-};
+
 export type travelPlanOutputType = {
   day: number;
   time: string;
@@ -33,7 +29,7 @@ const userData: travelPlanDataType = {
   tripLevel: "luxury",
   days: 3,
 };
-export const run = async ({
+export const chatForPlan = async ({
   destination,
   features,
   tripLevel,

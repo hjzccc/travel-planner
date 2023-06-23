@@ -10,7 +10,7 @@ function Page() {
   return (
     <div className="flex items-center justify-center w-screen h-screen ">
       <div className="flex flex-col items-center">
-        <p>Enter number of days:</p>
+        <p className="mx-auto max-w-[280px] text-center text-lg md:max-w-full md:text-xl">Enter number of days:</p>
         <div>
           <Button
             className="mx-4 bg-slate-300"

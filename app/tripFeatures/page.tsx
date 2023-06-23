@@ -11,24 +11,24 @@ function Page() {
   const cardOptions = [
     {
       key: "chill",
-      title: "Chill",
-      description: "You will visit the most popular places in the city.",
+      title: "Chill 🏖️",
+      description: "We will loosen the trip schedule as possible.",
     },
     {
-      key: "adventure",
-      title: "Adventure",
-      description: "You will visit the most popular places in the city.",
+      key: "nature",
+      title: "Nature 🏞️",
+      description: "We will embrace attractions in the nature.",
     },
     {
-      key: "exiting",
-      title: "Exiting",
-      description: "You will visit the most popular places in the city.",
+      key: "urban",
+      title: "Urban 🏙️",
+      description: "We will prioritize attractions in the downtown.",
     },
   ];
   return (
     <div className="flex items-center justify-center w-screen h-screen ">
       <div className="flex flex-col items-center">
-        <p>Enter the features you like:</p>
+        <p className="mx-auto max-w-[280px] text-center text-lg md:max-w-full md:text-xl">Enter the features you like:</p>
         <CardSelectionMulti
           cardOptions={cardOptions}
           setOption={setTripFeaures}

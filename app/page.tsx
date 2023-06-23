@@ -13,10 +13,10 @@ export default function Home() {
   return (
     <div className="flex items-center justify-center w-screen h-screen ">
       <div className="flex flex-col items-center">
-        <p>Enter the city you want to start your trip:</p>
+        <p className="mx-auto max-w-[280px] text-center text-lg md:max-w-full md:text-xl">Craft Your Journey Now:</p>
         <Input
           className="mx-2 my-3"
-          placeholder="Craft Your Journey NOW!"
+          placeholder="Where do you want to go?"
           allowClear
           type="text"
           name="city"

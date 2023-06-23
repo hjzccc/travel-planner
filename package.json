@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
     "@logtail/node": "^0.4.0",
     "@logtail/winston": "^0.4.1",
     "@pinecone-database/pinecone": "^0.1.6",

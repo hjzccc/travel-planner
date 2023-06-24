@@ -134,8 +134,12 @@ class TravelerChat {
     const formatInstructions = parser.getFormatInstructions();
     let humanMessage = new HumanChatMessage(
       `${formatInstructions}
+        if you found the the spot name is specified in a place, you should include that place with the spot but not separate them.
+        For example, for restaurant in SOHO, you should include SOHO with the restaurant.
         Extract the spot names from the sentence: 
         ${sentence}
+
+        
         `
     );
     let humanMessageLog = {

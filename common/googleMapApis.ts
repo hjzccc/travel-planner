@@ -1,0 +1,3 @@
+type placeDetails = {
+  name: string;
+};

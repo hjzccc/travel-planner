@@ -10,9 +10,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-200 font-mono">
+      <body>
         <Header />
-        <Provider store={store}>{children}</Provider>
+        <main className="bg-gray-200 font-mono">
+          <Provider store={store}>{children}</Provider>
+        </main>
       </body>
     </html>
   );

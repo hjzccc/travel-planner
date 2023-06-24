@@ -39,7 +39,7 @@ function Page({ cardOptions, setOption }: Props) {
       >
         <Card
           title={renderDollarIcons(tripLevelToDollarIcons[cardOption.key])}
-          className="prose-base rounded-lg flex flex-col justify-center items-center"
+          className="prose-base rounded-lg flex flex-col justify-center items-center z-0"
           hoverable
         >
             <Meta title={cardOption.title}/>

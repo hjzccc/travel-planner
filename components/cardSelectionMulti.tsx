@@ -37,7 +37,7 @@ function Page({ cardOptions, setOption }: Props) {
           setOption(selected);
         }}
       >
-        <Card className="rounded-lg prose-base w-96" hoverable>
+        <Card className="rounded-lg prose-base w-96 z-0" hoverable>
           <Meta title={cardOption.title} description={cardOption.description} />
         </Card>
       </div>

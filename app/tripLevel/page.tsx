@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import CardSelection from "@/components/cardSelection";
 import { useTravelPlanDataRedux } from "@/hooks/travelPlanData/hooks";
 import { Button } from "antd";
+import ProgressBar from "@/components/progressBar";
 
 function Page() {
   const [tripLevel, setTripLevel] = useState<string>("normal");
@@ -31,6 +32,7 @@ function Page() {
   return (
     <div className="flex items-center justify-center w-screen h-screen ">
       <div className="flex flex-col items-center">
+        <ProgressBar percent={50} />
         <p className="mx-auto max-w-[280px] text-center text-lg md:max-w-full md:text-xl">Enter your budget:</p>
         <CardSelection
           cardOptions={cardOptions}

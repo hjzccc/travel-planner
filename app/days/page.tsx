@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useTravelPlanDataRedux } from "@/hooks/travelPlanData/hooks";
 import { useRouter } from "next/navigation";
 import { Button } from "antd";
+import ProgressBar from "@/components/progressBar";
+
 function Page() {
   const [days, setDays] = useState<number>(1);
   const { doSetDay } = useTravelPlanDataRedux();
@@ -10,6 +12,7 @@ function Page() {
   return (
     <div className="flex items-center justify-center w-screen h-screen ">
       <div className="flex flex-col items-center">
+        <ProgressBar percent={25} />
         <p className="mx-auto max-w-[280px] text-center text-lg md:max-w-full md:text-xl">Enter number of days:</p>
         <div>
           <Button

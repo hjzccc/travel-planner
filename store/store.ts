@@ -5,4 +5,5 @@ const store = configureStore({
     travelPlanData: travelPlanDataSlice.reducer,
   },
 });
+
 export default store;

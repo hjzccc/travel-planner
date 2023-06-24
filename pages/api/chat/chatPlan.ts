@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { travelPlanDataType } from "@/store/travelPlanDataSlice";
-import { chatForPlan } from "@/common/planTablePrompt";
+import travelerChat from "@/common/planTablePrompt";
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,11 +8,15 @@ export default async function handler(
 ) {
   const body: travelPlanDataType = req.body;
   const { destination, features, tripLevel, days } = body;
-  const travelPlan = await chatForPlan({
-    destination,
-    features,
-    tripLevel,
-    days,
-  });
-  return res.status(200).json(travelPlan);
+  try {
+    const travelPlan = await travelerChat.chatForPlan({
+      destination,
+      features,
+      tripLevel,
+      days,
+    });
+    res.status(200).json(travelPlan);
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
 }

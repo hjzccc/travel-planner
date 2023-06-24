@@ -32,11 +32,15 @@ const userData: travelPlanDataType = {
 };
 
 class TravelerChat {
+  //@ts-ignore
   private vectorStore: PineconeStore;
+  //@ts-ignore
   private pineconeIndex: VectorOperationsApi;
+  //@ts-ignore
   private chat: ChatOpenAI;
+  private initPromise: Promise<void>;
   constructor() {
-    this.init();
+    this.initPromise = this.init();
   }
   private async init() {
     const pinecone = new PineconeClient();
@@ -61,7 +65,7 @@ class TravelerChat {
     days,
     tripLevel,
   }: travelPlanDataType) {
-    await this.init();
+    await this.initPromise;
     const results = await this.vectorStore.similaritySearch(destination, 3, {});
     const systemMessage = new SystemChatMessage(
       `Act as a travel itinerary planner, and you will plan the best trip ever! Provide a comprehensive and good trip plan in ${destination}.`
@@ -119,4 +123,41 @@ class TravelerChat {
       return fixedOutput;
     }
   }
+  public async chatPlanForSpotNames(sentence: string): Promise<string[]> {
+    await this.initPromise;
+    const systemMessage = new SystemChatMessage(
+      `Act as a sentense split helper, and you will help me extract the spot names from the sentence!`
+    );
+    const parser = StructuredOutputParser.fromZodSchema(
+      z.array(z.string().describe("spot names"))
+    );
+    const formatInstructions = parser.getFormatInstructions();
+    let humanMessage = new HumanChatMessage(
+      `${formatInstructions}
+        Extract the spot names from the sentence: 
+        ${sentence}
+        `
+    );
+    let humanMessageLog = {
+      rawData: {
+        sentence: sentence,
+      },
+      text: humanMessage.text,
+    };
+    logger.info(JSON.stringify(humanMessageLog));
+    const response = await this.chat.call([systemMessage, humanMessage]);
+    try {
+      let parsedOutput = await parser.parse(response.text);
+      logger.info(JSON.stringify(parsedOutput));
+      return parsedOutput;
+    } catch (e) {
+      const fixParser = OutputFixingParser.fromLLM(new ChatOpenAI(), parser);
+      fixParser.getFormatInstructions();
+      const fixedOutput = await fixParser.parse(response.text);
+      logger.info(JSON.stringify(fixedOutput));
+      return fixedOutput;
+    }
+  }
 }
+const travelerChat = new TravelerChat();
+export default travelerChat;

@@ -12,7 +12,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Header />
-        <main className="bg-gray-200 font-mono">
+        <main className="bg-gradient-to-r from-rose-100 via-amber-100 to-lime-100 font-mono backdrop-blur-lg">
           <Provider store={store}>{children}</Provider>
         </main>
       </body>

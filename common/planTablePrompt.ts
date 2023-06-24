@@ -16,6 +16,7 @@ import {
 import { z } from "zod";
 import logger from "./winstonLogger";
 import { travelPlanDataType } from "@/store/travelPlanDataSlice";
+import { VectorOperationsApi } from "@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch";
 const pinecone = new PineconeClient();
 
 export type travelPlanOutputType = {
@@ -29,43 +30,58 @@ const userData: travelPlanDataType = {
   tripLevel: "luxury",
   days: 3,
 };
-export const chatForPlan = async ({
-  destination,
-  features,
-  tripLevel,
-  days,
-}: travelPlanDataType = userData): Promise<travelPlanOutputType> => {
-  const model = new OpenAI();
-  await pinecone.init({
-    environment: `${process.env.PINECONE_ENVIRONMENT}`,
-    apiKey: `${process.env.PINECONE_API_KEY}`,
-  });
-  const pineconeIndex = pinecone.Index("travel-articles");
-  const vectorStore = await PineconeStore.fromExistingIndex(
-    new OpenAIEmbeddings(),
-    { pineconeIndex }
-  );
-  const results = await vectorStore.similaritySearch(destination, 3, {});
 
-  const chat = new ChatOpenAI();
+class TravelerChat {
+  private vectorStore: PineconeStore;
+  private pineconeIndex: VectorOperationsApi;
+  private chat: ChatOpenAI;
+  constructor() {
+    this.init();
+  }
+  private async init() {
+    const pinecone = new PineconeClient();
+    const model = new OpenAI();
+    await pinecone.init({
+      environment: `${process.env.PINECONE_ENVIRONMENT}`,
+      apiKey: `${process.env.PINECONE_API_KEY}`,
+    });
+    this.pineconeIndex = pinecone.Index("travel-articles");
+    this.vectorStore = await PineconeStore.fromExistingIndex(
+      new OpenAIEmbeddings(),
+      {
+        pineconeIndex: this.pineconeIndex,
+      }
+    );
+    this.chat = new ChatOpenAI();
+  }
 
-  const systemMessage = new SystemChatMessage(
-    `Act as a travel itinerary planner, and you will plan the best trip ever! Provide a comprehensive and good trip plan in ${destination}.`
-  );
-  const parser = StructuredOutputParser.fromZodSchema(
-    z.array(
-      z.object({
-        day: z.number().describe("day of the trip,this is a number"),
-        time: z.string().describe("time of the day, morning, afternoon, night"),
-        activity: z
-          .string()
-          .describe("activity of the day,this must be specific!!"),
-      })
-    )
-  );
-  const formatInstructions = parser.getFormatInstructions();
-  let humanMessage = new HumanChatMessage(
-    `
+  public async chatForPlan({
+    destination,
+    features,
+    days,
+    tripLevel,
+  }: travelPlanDataType) {
+    await this.init();
+    const results = await this.vectorStore.similaritySearch(destination, 3, {});
+    const systemMessage = new SystemChatMessage(
+      `Act as a travel itinerary planner, and you will plan the best trip ever! Provide a comprehensive and good trip plan in ${destination}.`
+    );
+    const parser = StructuredOutputParser.fromZodSchema(
+      z.array(
+        z.object({
+          day: z.number().describe("day of the trip,this is a number"),
+          time: z
+            .string()
+            .describe("time of the day, morning, afternoon, night"),
+          activity: z
+            .string()
+            .describe("activity of the day,this must be specific!!"),
+        })
+      )
+    );
+    const formatInstructions = parser.getFormatInstructions();
+    let humanMessage = new HumanChatMessage(
+      `
     Here I already have some blogs may help you make a travel itinerary:
     [
       ${results.map((result) => {
@@ -79,27 +95,28 @@ export const chatForPlan = async ({
     Take the geographical elements into account, do not travel so many attractions that too far away in one day
     ${formatInstructions}
     `
-  );
-  let humanMessageLog = {
-    rawData: {
-      destination: destination,
-      features: features,
-      tripLevel: tripLevel,
-      days: days,
-    },
-    text: humanMessage.text,
-  };
-  logger.info(JSON.stringify(humanMessageLog));
-  const response = await chat.call([systemMessage, humanMessage]);
-  try {
-    let parsedOutput = await parser.parse(response.text);
-    logger.info(JSON.stringify(parsedOutput));
-    return parsedOutput;
-  } catch (e) {
-    const fixParser = OutputFixingParser.fromLLM(new ChatOpenAI(), parser);
-    fixParser.getFormatInstructions();
-    const fixedOutput = await fixParser.parse(response.text);
-    logger.info(JSON.stringify(fixedOutput));
-    return fixedOutput;
+    );
+    let humanMessageLog = {
+      rawData: {
+        destination: destination,
+        features: features,
+        tripLevel: tripLevel,
+        days: days,
+      },
+      text: humanMessage.text,
+    };
+    logger.info(JSON.stringify(humanMessageLog));
+    const response = await this.chat.call([systemMessage, humanMessage]);
+    try {
+      let parsedOutput = await parser.parse(response.text);
+      logger.info(JSON.stringify(parsedOutput));
+      return parsedOutput;
+    } catch (e) {
+      const fixParser = OutputFixingParser.fromLLM(new ChatOpenAI(), parser);
+      fixParser.getFormatInstructions();
+      const fixedOutput = await fixParser.parse(response.text);
+      logger.info(JSON.stringify(fixedOutput));
+      return fixedOutput;
+    }
   }
-};
+}

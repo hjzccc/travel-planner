@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { travelPlanDataType } from "@/store/travelPlanDataSlice";
 import travelerChat from "@/common/planTablePrompt";
+import { useAppDispath } from "@/hooks/redux/hooks";
 
 export default async function handler(
   req: NextApiRequest,

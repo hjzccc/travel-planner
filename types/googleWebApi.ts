@@ -28,6 +28,7 @@ export interface Result {
   user_ratings_total: number;
   utc_offset: number;
   vicinity: string;
+  price_level: number;
   website: string;
 }
 
@@ -111,5 +112,5 @@ export interface PlaceApiFindPlaceResponse {
 }
 
 export interface Candidate {
-  place_id?: string;
+  place_id: string;
 }

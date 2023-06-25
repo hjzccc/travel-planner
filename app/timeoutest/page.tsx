@@ -7,7 +7,7 @@ const timeoutfetcher = async () => {
   return "done";
 };
 function Page() {
-  const { data, isLoading, error } = useSWR("/api/chat/chatForPlan", (url) =>
+  const { data, isLoading, error } = useSWR("/api/chat/chatPlan", (url) =>
     fetcher(url, {
       method: "POST",
       headers: {

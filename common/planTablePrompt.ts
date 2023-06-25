@@ -109,16 +109,19 @@ class TravelerChat {
       text: humanMessage.text,
     };
     // logger.info(JSON.stringify(humanMessageLog));
+    console.log(JSON.stringify(humanMessageLog));
     const response = await this.chat.call([systemMessage, humanMessage]);
     try {
       let parsedOutput = await parser.parse(response.text);
       // logger.info(JSON.stringify(parsedOutput));
+      console.log(JSON.stringify(parsedOutput));
       return parsedOutput;
     } catch (e) {
       const fixParser = OutputFixingParser.fromLLM(new ChatOpenAI(), parser);
       fixParser.getFormatInstructions();
       const fixedOutput = await fixParser.parse(response.text);
       // logger.info(JSON.stringify(fixedOutput));
+      console.log(JSON.stringify(fixedOutput));
       return fixedOutput;
     }
   }
@@ -148,19 +151,19 @@ class TravelerChat {
       text: humanMessage.text,
     };
     //logger.info(JSON.stringify(humanMessageLog));
-    console.log(humanMessage);
+    console.log(JSON.stringify(humanMessageLog));
     const response = await this.chat.call([systemMessage, humanMessage]);
     try {
       let parsedOutput = await parser.parse(response.text);
       //logger.info(JSON.stringify(parsedOutput));
-      console.log(parsedOutput);
+      console.log(JSON.stringify(parsedOutput));
       return parsedOutput;
     } catch (e) {
       const fixParser = OutputFixingParser.fromLLM(new ChatOpenAI(), parser);
       fixParser.getFormatInstructions();
       const fixedOutput = await fixParser.parse(response.text);
       //logger.info(JSON.stringify(fixedOutput));
-      console.log(fixedOutput);
+      console.log(JSON.stringify(fixedOutput));
       return fixedOutput;
     }
   }

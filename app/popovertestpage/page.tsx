@@ -8,7 +8,7 @@ function Page() {
     <div className="w-screen h-screen">
       <Popover
         content={
-          <SpotPopHover spotName="Sarabeth's Central Park South in New York"></SpotPopHover>
+          <SpotPopHover spotName="chihuly garden and glass musem in seattle"></SpotPopHover>
         }
         trigger="click"
       >

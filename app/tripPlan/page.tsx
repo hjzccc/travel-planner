@@ -4,8 +4,8 @@ import DailyPlan from "@/components/dailyPlan";
 import useRequest from "@/hooks/useRequest";
 import { useAppSelector } from "@/hooks/redux/hooks";
 import { useRouter } from "next/navigation";
-import { LoadingOutlined } from '@ant-design/icons';
-import { Spin } from 'antd';
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 
 interface PlanItem {
   day: number;
@@ -26,21 +26,21 @@ const Page = () => {
     body: useAppSelector((state) => state.travelPlanData),
     onSuccess: (response) => {
       setPlanItems(response);
-    }
+    },
   });
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); 
+      setLoading(true);
       try {
         await doRequest();
       } catch (error) {
         console.error("Error fetching plan items:", error);
       } finally {
         setLoading(false);
-      };
+      }
     };
     fetchData();
   }, []);
@@ -57,6 +57,5 @@ const Page = () => {
     </div>
   );
 };
-
 
 export default Page;

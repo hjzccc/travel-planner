@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import TimeActivity from "./timeActivity";
 import useRequest from "@/hooks/useRequest";
+import { List } from 'antd';
+
 
 interface PlanItem {
   day: number;
@@ -34,9 +36,16 @@ const DailyPlan: React.FC<{ planItems: PlanItem[] }> = ({ planItems }) => {
   });
 
   return (
-    <ol>
-      {itineraryList}
-    </ol>
+    <List
+      itemLayout="vertical"
+      size="large"
+      dataSource={[planItems]}
+      renderItem={(item) => (
+        <List.Item>
+          {itineraryList}
+        </List.Item>
+      )}
+    />
   );
 };
 

@@ -1,3 +1,5 @@
+import { List } from 'antd';
+
 interface TimeActivityProps {
   day: number;
   time: string;
@@ -23,7 +25,9 @@ const TimeActivity = ({ day, time, activityList }: TimeActivityProps) => {
     });
   };
   return (
-    <li>Day{day} {time} - {highlightActivity()}</li>
+    <List.Item>
+      Day{day} {time} - {highlightActivity()}
+    </List.Item>
   )
 }
 

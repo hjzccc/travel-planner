@@ -7,18 +7,13 @@ interface PlanItem {
   activity: string;
 }
 
-interface DailyPlanProps {
-  planItems: PlanItem[];
-}
-
-const DailyPlan: React.FC<DailyPlanProps> = ({ planItems }) => {
+const DailyPlan: React.FC<{ planItems: PlanItem[] }> = ({ planItems }) => {
+  const itineraryList = planItems?.map((item) => {
+     return <TimeActivity day={item.day} time={item.time} activity={item.activity} />;
+  });
   return (
-    <ol className="gradient-list">
-      {planItems.map((item, index) => (
-        <li key={index}>
-          <TimeActivity day={item.day} time={item.time} activity={item.activity} />
-        </li>
-      ))}
+    <ol>
+      {itineraryList}
     </ol>
   );
 };

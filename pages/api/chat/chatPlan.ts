@@ -7,7 +7,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const body: travelPlanDataType = req.body;
+  console.log(body);
   const { destination, features, tripLevel, days } = body;
+
   try {
     const travelPlan = await travelerChat.chatForPlan({
       destination,

@@ -10,7 +10,10 @@ import { Spin } from 'antd';
 interface PlanItem {
   day: number;
   time: string;
-  activity: string;
+  activityList: {
+    activity: string;
+    highlightWords: string[];
+  };
 }
 
 const Page = () => {
@@ -44,11 +47,13 @@ const Page = () => {
 
   return (
     <div className="flex items-center justify-center w-screen h-screen">
-    {loading ? (
-      <Spin indicator={antIcon} />
-    ) : (
-      <DailyPlan planItems={planItems!} />
-    )}
+      <div className="flex flex-col items-center">
+        {loading ? (
+          <Spin indicator={antIcon} />
+        ) : (
+          <DailyPlan planItems={planItems!} />
+        )}
+      </div>
     </div>
   );
 };

@@ -15,7 +15,7 @@ function Page() {
   const { doSetFeatures } = useTravelPlanDataRedux();
   const router = useRouter();
   const travelPlanData = useAppSelector((state) => state.travelPlanData);
-
+  console.log(travelPlanData);
   const { doRequest, errors } = useRequest({
     url: "/api/chat/chatPlan",
     method: "post",

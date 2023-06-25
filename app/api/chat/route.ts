@@ -26,7 +26,7 @@ export const config = {
 //     res.status(500).json({ message: err.message });
 //   }
 // }
-export default async function handler(request: NextRequest) {
+export async function POST(request: NextRequest) {
   const body: travelPlanDataType = await request.json();
   console.log(body);
   const { destination, features, tripLevel, days } = body;
@@ -38,6 +38,7 @@ export default async function handler(request: NextRequest) {
       tripLevel,
       days,
     });
+    console.log(travelPlan);
     return NextResponse.json(travelPlan, { status: 200 });
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 });

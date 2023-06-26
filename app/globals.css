@@ -3,3 +3,10 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Caprasimo&display=swap');
 
+
+.ant-steps .ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title::after 
+{ @apply bg-rose-300 }
+.ant-steps .ant-steps-item-process .ant-steps-item-icon
+{ @apply bg-rose-400 border-rose-400}
+.ant-steps .ant-steps-item-finish .ant-steps-item-icon >.ant-steps-icon
+{@apply text-rose-300}

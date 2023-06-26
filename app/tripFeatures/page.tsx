@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import CardSelectionMulti from "@/components/cardSelectionMulti";
 import { Button } from "antd";
 import ProgressBar from "@/components/progressBar";
-
+import Stepbar from "@/components/stepsBar";
 function Page() {
   //const [tripFeaures, setTripFeaures] = useState<string[]>([]);
   const { doSetFeatures } = useTravelPlanDataRedux();
@@ -32,7 +32,7 @@ function Page() {
   return (
     <div className="flex items-center justify-center w-screen h-screen">
       <div className="flex flex-col items-center">
-        <ProgressBar percent={75} />
+        <Stepbar current={3} />
         <p className="mx-auto max-w-[280px] text-center text-lg md:max-w-full md:text-xl">
           Enter the features you like:
         </p>

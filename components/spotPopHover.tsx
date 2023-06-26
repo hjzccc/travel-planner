@@ -47,20 +47,24 @@ function Page({ spotName }: Props) {
           fallback="xxx"
           className="w-screen"
           width={380}
-          height={250}
+          height={290}
         ></Image>
-        <div className="absolute ml-5 text-4xl font-black text-slate-200 font-Caprasimo top-36">
-          {data?.name}
-        </div>
-        <div className="absolute ml-5 top-48">
-          <EnvironmentFilled className=" text-slate-200" />
-        </div>
-        <div className="absolute pt-1 pr-1 ml-10 text-slate-200 top-48 font-Caprasimo">
-          {data?.formatted_address}
+        <div className="absolute top-36">
+          <div className="ml-5 text-4xl font-black text-slate-200 font-Caprasimo">
+            {data?.name}
+          </div>
+          <div className="relative mt-2 ">
+            <div className="inline-block ml-5">
+              <EnvironmentFilled className=" text-slate-200" />
+            </div>
+            <div className="absolute inline-block pt-1 pl-2 text-slate-200 font-Caprasimo">
+              {data?.formatted_address}
+            </div>
+          </div>
         </div>
       </div>
       <div>
-        <span className="font-bold font-Caprasimo">Rating:</span>
+        <span className="pl-3 font-bold font-Caprasimo">Rating:</span>
         <Rate
           disabled
           defaultValue={data?.rating}
@@ -68,7 +72,7 @@ function Page({ spotName }: Props) {
         ></Rate>
       </div>
       <div>
-        <span className="font-bold font-Caprasimo">Price:</span>
+        <span className="pl-3 font-bold font-Caprasimo">Price:</span>
         <Rate
           disabled
           className="relative left-3.5"

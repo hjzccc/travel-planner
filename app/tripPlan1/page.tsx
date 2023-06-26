@@ -52,7 +52,7 @@ const Page = () => {
     isLoading: highlightLoading,
     error: error2,
   } = useSWR<string[][]>(
-    planItems ? "/api/chat/chatSpotNames" : "",
+    planItems ? "/api/chat/chatSpotNames" : null,
     (url: string) =>
       fetcher(url, {
         method: "post",

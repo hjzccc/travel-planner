@@ -30,7 +30,7 @@ function Page() {
   ];
 
   return (
-    <div className="flex items-center justify-center w-screen h-screen ">
+    <div className="flex items-center justify-center w-screen h-screen">
       <div className="flex flex-col items-center">
         <ProgressBar percent={75} />
         <p className="mx-auto max-w-[280px] text-center text-lg md:max-w-full md:text-xl">
@@ -41,16 +41,9 @@ function Page() {
           setOption={doSetFeatures}
         ></CardSelectionMulti>
         <Button
-<<<<<<< HEAD
-          className="bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-12 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400"
-          onClick={async () => {
-            await doSetFeatures(tripFeaures);
-            router.push('/tripPlan');
-=======
           className="flex items-center justify-center w-full h-12 px-6 font-semibold text-white rounded-lg bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400"
           onClick={() => {
             router.push("/tripPlan");
->>>>>>> 42afe52942f75821c99fea7766e0cdec07945f31
           }}
         >
           Next

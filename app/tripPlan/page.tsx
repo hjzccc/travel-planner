@@ -25,7 +25,31 @@ const Page = () => {
     method: "post",
     body: useAppSelector((state) => state.travelPlanData),
     onSuccess: (response) => {
-      setPlanItems(response);
+      const convertedResponse: PlanItem[] = response.map((item: { day: any; time: any; activity: any; }, index: number) => ({
+        day: item.day,
+        time: item.time,
+        activityList: {
+          activity: item.activity,
+          highlightWords: [],
+        },
+      }));
+      setPlanItems(convertedResponse);
+    }
+  });
+
+  const { doRequest: highlightRequest, errors: highlightErrors } = useRequest({
+    url: "/api/chat/chatSpotNames",
+    method: "post",
+    body: { sentences: planItems.map(item => item.activityList.activity)},
+    onSuccess: (response) => {
+      const updatedPlanItems = planItems.map((item, index) => ({
+        ...item,
+        activityList: {
+          ...item.activityList,
+          highlightWords: response[index],
+        },
+      }));
+      setPlanItems(updatedPlanItems);
     }
   });
 
@@ -44,6 +68,12 @@ const Page = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (planItems.length > 0) {
+      highlightRequest();
+    }
+  }, [planItems]);
 
   return (
     <div className="flex items-center justify-center w-screen h-screen">

@@ -109,7 +109,7 @@ class TravelerChat {
       text: humanMessage.text,
     };
     // logger.info(JSON.stringify(humanMessageLog));
-    console.log(JSON.stringify(humanMessageLog));
+    //console.log(JSON.stringify(humanMessageLog));
     const response = await this.chat.call([systemMessage, humanMessage]);
     try {
       let parsedOutput = await parser.parse(response.text);
@@ -151,7 +151,7 @@ class TravelerChat {
       text: humanMessage.text,
     };
     //logger.info(JSON.stringify(humanMessageLog));
-    console.log(JSON.stringify(humanMessageLog));
+    // console.log(JSON.stringify(humanMessageLog));
     const response = await this.chat.call([systemMessage, humanMessage]);
     try {
       let parsedOutput = await parser.parse(response.text);

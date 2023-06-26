@@ -3,7 +3,6 @@ import { useTravelPlanDataRedux } from "@/hooks/travelPlanData/hooks";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input, Button, Steps } from "antd";
-import ProgressBar from "@/components/progressBar";
 import Stepbar from "@/components/stepsBar";
 export default function Home() {
   const router = useRouter();

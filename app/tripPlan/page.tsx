@@ -5,7 +5,6 @@ import useRequest from "@/hooks/useRequest";
 import { useAppSelector } from "@/hooks/redux/hooks";
 import { useRouter } from "next/navigation";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
 import Lottie from "lottie-react";
 import coolAnimation from "@/assets/2523-loading.json";
 import textAnimation from "@/assets/animation_ljc27d9b.json";
@@ -18,26 +17,17 @@ interface PlanItem {
   };
 }
 
+const planItems = [
+
+];
+
 const Page = () => {
-  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-  const router = useRouter();
   const [planItems, setPlanItems] = useState<PlanItem[]>([]);
   const { doRequest, errors } = useRequest({
     url: "/api/chat/chatPlan",
     method: "post",
     body: useAppSelector((state) => state.travelPlanData),
     onSuccess: (response) => {
-      const convertedResponse: PlanItem[] = response.map(
-        (item: { day: any; time: any; activity: any }, index: number) => ({
-          day: item.day,
-          time: item.time,
-          activityList: {
-            activity: item.activity,
-            highlightWords: [],
-          },
-        })
-      );
-      setPlanItems(convertedResponse);
     },
   });
 
@@ -63,21 +53,32 @@ const Page = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        await doRequest();
+        const response = await doRequest();
+        const convertedResponse: PlanItem[] = response.map(
+          (item: { day: any; time: any; activity: any }, index: number) => ({
+            day: item.day,
+            time: item.time,
+            activityList: {
+              activity: item.activity,
+              highlightWords: [],
+            },
+          })
+        );
+        setPlanItems(convertedResponse);
+  
+        if (convertedResponse.length > 0 && !loading) {
+          await highlightRequest();
+        }
       } catch (error) {
         console.error("Error fetching plan items:", error);
       } finally {
         setLoading(false);
       }
     };
+  
     fetchData();
   }, []);
-
-  useEffect(() => {
-    if (planItems.length > 0) {
-      highlightRequest();
-    }
-  }, [planItems]);
+  
 
   return (
     <div className="flex items-center justify-center w-screen h-screen">

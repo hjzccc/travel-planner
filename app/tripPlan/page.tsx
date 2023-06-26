@@ -6,7 +6,9 @@ import { useAppSelector } from "@/hooks/redux/hooks";
 import { useRouter } from "next/navigation";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
-
+import Lottie from "lottie-react";
+import coolAnimation from "@/assets/2523-loading.json";
+import textAnimation from "@/assets/animation_ljc27d9b.json";
 interface PlanItem {
   day: number;
   time: string;
@@ -25,22 +27,24 @@ const Page = () => {
     method: "post",
     body: useAppSelector((state) => state.travelPlanData),
     onSuccess: (response) => {
-      const convertedResponse: PlanItem[] = response.map((item: { day: any; time: any; activity: any; }, index: number) => ({
-        day: item.day,
-        time: item.time,
-        activityList: {
-          activity: item.activity,
-          highlightWords: [],
-        },
-      }));
+      const convertedResponse: PlanItem[] = response.map(
+        (item: { day: any; time: any; activity: any }, index: number) => ({
+          day: item.day,
+          time: item.time,
+          activityList: {
+            activity: item.activity,
+            highlightWords: [],
+          },
+        })
+      );
       setPlanItems(convertedResponse);
-    }
+    },
   });
 
   const { doRequest: highlightRequest, errors: highlightErrors } = useRequest({
     url: "/api/chat/chatSpotNames",
     method: "post",
-    body: { sentences: planItems.map(item => item.activityList.activity)},
+    body: { sentences: planItems.map((item) => item.activityList.activity) },
     onSuccess: (response) => {
       const updatedPlanItems = planItems.map((item, index) => ({
         ...item,
@@ -50,7 +54,7 @@ const Page = () => {
         },
       }));
       setPlanItems(updatedPlanItems);
-    }
+    },
   });
 
   const [loading, setLoading] = useState(false);
@@ -79,7 +83,13 @@ const Page = () => {
     <div className="flex items-center justify-center w-screen h-screen">
       <div className="flex flex-col items-center">
         {loading ? (
-          <Spin indicator={antIcon} />
+          <div className="flex flex-col items-center justify-center w-screen h-screen">
+            <Lottie
+              className="mb-6 h-96 w-96"
+              animationData={coolAnimation}
+            ></Lottie>
+            <Lottie animationData={textAnimation}></Lottie>
+          </div>
         ) : (
           <DailyPlan planItems={planItems!} />
         )}

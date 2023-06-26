@@ -17,9 +17,7 @@ interface PlanItem {
   };
 }
 
-const planItems = [
-
-];
+const planItems = [];
 
 const Page = () => {
   const [planItems, setPlanItems] = useState<PlanItem[]>([]);
@@ -70,12 +68,29 @@ const Page = () => {
       setLoading(true);
       try {
         await doRequest();
+        const response = await doRequest();
+        const convertedResponse: PlanItem[] = response.map(
+          (item: { day: any; time: any; activity: any }, index: number) => ({
+            day: item.day,
+            time: item.time,
+            activityList: {
+              activity: item.activity,
+              highlightWords: [],
+            },
+          })
+        );
+        setPlanItems(convertedResponse);
+
+        if (convertedResponse.length > 0 && !loading) {
+          await highlightRequest();
+        }
       } catch (error) {
         console.error("Error fetching plan items:", error);
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 

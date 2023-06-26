@@ -1,4 +1,5 @@
 import SpotPopHover from "@/components/spotPopHover";
+import { useAppSelector } from "@/hooks/redux/hooks";
 import { Popover, List } from "antd";
 import React from "react";
 
@@ -12,13 +13,14 @@ interface TimeActivityProps {
 }
 
 const TimeActivity: React.FC<TimeActivityProps> = ({ day, time, activityList }) => {
+  const { destination } = useAppSelector((state) => state.travelPlanData)
   const { activity, highlightWords } = activityList;
 
   const highlightActivity = () => {
     const highlightedActivities: JSX.Element[] = [];
     let tempActivity = activity;
     let index = -1;
-  
+
     highlightWords.forEach((word) => {
       let highlightedActivity: JSX.Element = (
         <>
@@ -30,7 +32,7 @@ const TimeActivity: React.FC<TimeActivityProps> = ({ day, time, activityList }) 
       if (index !== -1) {
         const highlightedSpot = tempActivity.slice(index, index + word.length);
         const popoverContent = (
-          <Popover content={<SpotPopHover spotName={highlightedSpot} />} trigger="click">
+          <Popover content={<SpotPopHover spotName={`${highlightedSpot} at ${destination}`}  />} trigger="click">
             <span className="font-bold underline">{highlightedSpot}</span>
           </Popover>
         );

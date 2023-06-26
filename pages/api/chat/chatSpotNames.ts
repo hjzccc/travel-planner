@@ -15,7 +15,12 @@ export default async function handler(req: NextRequest) {
       const response = await travelerChat.chatPlanForSpotNames(sentence);
       spotNames.push(response);
     }
-    return NextResponse.json(spotNames, { status: 200 });
+    return NextResponse.json(spotNames, {
+      status: 200,
+      headers: {
+        "Cache-Control": "s-maxage=3",
+      },
+    });
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 });
   }

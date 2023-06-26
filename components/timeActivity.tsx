@@ -1,5 +1,6 @@
 import SpotPopHover from "@/components/spotPopHover";
 import { Popover, List } from "antd";
+import React from "react";
 
 interface TimeActivityProps {
   day: number;
@@ -14,17 +15,18 @@ const TimeActivity: React.FC<TimeActivityProps> = ({ day, time, activityList }) 
   const { activity, highlightWords } = activityList;
 
   const highlightActivity = () => {
+    const highlightedActivities: JSX.Element[] = [];
     let tempActivity = activity;
-    let highlightedActivity = (
-      <>
-      {activity}
-      </>
-    );
-
+    let index = -1;
+  
     highlightWords.forEach((word) => {
-
-      const index = tempActivity.indexOf(word);
-
+      let highlightedActivity: JSX.Element = (
+        <>
+          {activity}
+        </>
+      );
+      index = tempActivity.indexOf(word);
+  
       if (index !== -1) {
         const highlightedSpot = tempActivity.slice(index, index + word.length);
         const popoverContent = (
@@ -32,22 +34,30 @@ const TimeActivity: React.FC<TimeActivityProps> = ({ day, time, activityList }) 
             <span className="font-bold underline">{highlightedSpot}</span>
           </Popover>
         );
-
+  
         highlightedActivity = (
           <>
             {tempActivity.slice(0, index)}
             {popoverContent}
-            {tempActivity.slice(index + word.length)}
           </>
         );
-
+  
         tempActivity = tempActivity.slice(index + word.length);
+        highlightedActivities.push(highlightedActivity);
+        index = index + word.length;
       }
     });
-
-    return <span>{highlightedActivity}</span>;
+  
+    return (
+      <>
+        {highlightedActivities.map((item, index) => (
+          <React.Fragment key={index}>{item}</React.Fragment>
+        ))}
+        {" " + tempActivity.slice(index)}
+      </>
+    );
   };
-
+  
   return (
     <List.Item className="flex justify-center w-screen">
       <List.Item.Meta

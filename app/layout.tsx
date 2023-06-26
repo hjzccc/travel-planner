@@ -12,7 +12,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Header />
-        <main className="px-4 pt-16 font-mono bg-gradient-to-r from-rose-100 via-amber-100 to-lime-100 backdrop-blur-lg">
+        <main className="min-h-screen px-4 pt-16 font-mono bg-gradient-to-r from-rose-100 via-amber-100 to-lime-100 backdrop-blur-lg">
           <Provider store={store}>{children}</Provider>
         </main>
       </body>

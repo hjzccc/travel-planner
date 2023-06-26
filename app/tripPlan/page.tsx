@@ -28,6 +28,17 @@ const Page = () => {
     method: "post",
     body: useAppSelector((state) => state.travelPlanData),
     onSuccess: (response) => {
+      const convertedResponse: PlanItem[] = response.map(
+        (item: { day: any; time: any; activity: any }, index: number) => ({
+          day: item.day,
+          time: item.time,
+          activityList: {
+            activity: item.activity,
+            highlightWords: [],
+          },
+        })
+      );
+      setPlanItems(convertedResponse);
     },
   });
 
@@ -48,42 +59,39 @@ const Page = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [highlightLoading, setHighlightLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await doRequest();
-        const convertedResponse: PlanItem[] = response.map(
-          (item: { day: any; time: any; activity: any }, index: number) => ({
-            day: item.day,
-            time: item.time,
-            activityList: {
-              activity: item.activity,
-              highlightWords: [],
-            },
-          })
-        );
-        setPlanItems(convertedResponse);
-  
-        if (convertedResponse.length > 0 && !loading) {
-          await highlightRequest();
-        }
+        await doRequest();
       } catch (error) {
         console.error("Error fetching plan items:", error);
       } finally {
         setLoading(false);
       }
     };
-  
     fetchData();
   }, []);
-  
+
+  useEffect(() => {
+    setHighlightLoading(true);
+    try {
+      if (planItems.length > 0) {
+        highlightRequest()
+      }
+    } catch (error) {
+      console.error("Error fetching plan items:", error);
+    } finally {
+      setHighlightLoading(false);
+    }
+  }, [planItems]);
 
   return (
     <div className="flex items-center justify-center w-screen h-screen">
       <div className="flex flex-col items-center">
-        {loading ? (
+        {loading || highlightLoading ? (
           <div className="flex flex-col items-center justify-center w-screen h-screen">
             <Lottie
               className="mb-6 h-96 w-96"

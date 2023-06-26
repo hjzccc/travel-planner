@@ -38,7 +38,6 @@ const Page = () => {
       );
       setPlanItems(convertedResponse);
     },
-    onSuccess: (response) => {},
   });
 
   const { doRequest: highlightRequest, errors: highlightErrors } = useRequest({

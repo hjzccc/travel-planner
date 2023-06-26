@@ -27,7 +27,7 @@ const Page = () => {
     url: "/api/chat/chatPlan",
     method: "post",
     body: useAppSelector((state) => state.travelPlanData),
-    onSuccess: (response) => {
+    onSuccess: async (response) => {
       const convertedResponse: PlanItem[] = response.map(
         (item: { day: any; time: any; activity: any }, index: number) => ({
           day: item.day,
@@ -39,6 +39,21 @@ const Page = () => {
         })
       );
       setPlanItems(convertedResponse);
+      await new Promise<void>((resolve, reject) => {
+        highlightRequest({
+          onSuccess: (response: any[]) => {
+            const updatedPlanItems = convertedResponse.map((item, index) => ({
+              ...item,
+              activityList: {
+                ...item.activityList,
+                highlightWords: response[index],
+              },
+            }));
+            setPlanItems(updatedPlanItems);
+            resolve();
+          }
+        });
+      });
     },
   });
 
@@ -46,20 +61,9 @@ const Page = () => {
     url: "/api/chat/chatSpotNames",
     method: "post",
     body: { sentences: planItems.map((item) => item.activityList.activity) },
-    onSuccess: (response) => {
-      const updatedPlanItems = planItems.map((item, index) => ({
-        ...item,
-        activityList: {
-          ...item.activityList,
-          highlightWords: response[index],
-        },
-      }));
-      setPlanItems(updatedPlanItems);
-    },
   });
 
   const [loading, setLoading] = useState(false);
-  const [highlightLoading, setHighlightLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,23 +79,23 @@ const Page = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    setHighlightLoading(true);
-    try {
-      if (planItems.length > 0) {
-        highlightRequest()
-      }
-    } catch (error) {
-      console.error("Error fetching plan items:", error);
-    } finally {
-      setHighlightLoading(false);
-    }
-  }, [planItems]);
+  // useEffect(() => {
+  //   setHighlightLoading(true);
+  //   try {
+  //     if (planItems.length > 0) {
+  //       highlightRequest()
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching plan items:", error);
+  //   } finally {
+  //     setHighlightLoading(false);
+  //   }
+  // }, [planItems]);
 
   return (
     <div className="flex items-center justify-center w-screen h-screen">
       <div className="flex flex-col items-center">
-        {loading || highlightLoading ? (
+        {loading? (
           <div className="flex flex-col items-center justify-center w-screen h-screen">
             <Lottie
               className="mb-6 h-96 w-96"
